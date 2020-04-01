@@ -1,6 +1,7 @@
 package flashing
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -21,9 +22,12 @@ func (fm *FlashMessage) Set(w http.ResponseWriter, cookieName string) error {
 	if err != nil {
 		return err
 	}
+	// convert byteslice to string
+	str := base64.StdEncoding.EncodeToString(js)
 
 	c := &http.Cookie{Name: cookieName,
-		Value: string(js)}
+		Value: str}
+
 	http.SetCookie(w, c)
 
 	return nil
@@ -43,9 +47,12 @@ func GetFlash(w http.ResponseWriter, r *http.Request, cookieName string) (*Flash
 		}
 	}
 
+	// decode string
+	a, _ := base64.StdEncoding.DecodeString(c.Value)
+
 	var fm *FlashMessage
 
-	err = json.Unmarshal([]byte(c.Value), &fm)
+	err = json.Unmarshal(a, &fm)
 	if err != nil {
 		fmt.Println("Error decoding flash cookie value")
 		return nil, err
