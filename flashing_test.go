@@ -38,11 +38,7 @@ func TestFlashMessage_Set(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			fm := &FlashMessage{
-				Message: tt.fields.Message,
-				Type:    tt.fields.Type,
-			}
-			if err := fm.Set(tt.args.w, tt.args.cookieName); (err != nil) != tt.wantErr {
+			if err := SetFlash(tt.args.w, tt.fields.Message, tt.fields.Type, tt.args.cookieName); (err != nil) != tt.wantErr {
 				t.Errorf("Set() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
@@ -82,7 +78,7 @@ func TestGetFlash(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 
-			tt.args.flash.Set(tt.args.w, tt.args.cookieName)
+			SetFlash(tt.args.w, tt.args.flash.Message, tt.args.flash.Type, tt.args.cookieName)
 
 			got, err := GetFlash(tt.args.w, tt.args.r, tt.args.cookieName)
 			if (err != nil) != tt.wantErr {
