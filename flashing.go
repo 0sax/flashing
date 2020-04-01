@@ -34,7 +34,7 @@ func (fm *FlashMessage) Set(w http.ResponseWriter, cookieName string) error {
 }
 
 // GetFlash checks the request for a cookie a cookie and returns its contents
-// as a FlashMessage
+// as a FlashMessage.
 func GetFlash(w http.ResponseWriter, r *http.Request, cookieName string) (*FlashMessage, error) {
 
 	c, err := r.Cookie(cookieName)
