@@ -8,13 +8,14 @@ import (
 	"time"
 )
 
-type flashMessage struct {
+// FlashMessage represents a flash message
+type FlashMessage struct {
 	Message string `json:"message"`
 	Type    string `json:"type"`
 }
 
-// Set encodes a flashMessage struct as a json string to a cookie
-func (fm *flashMessage) Set(w http.ResponseWriter, cookieName string) error {
+// Set encodes a FlashMessage struct as a json string to a cookie
+func (fm *FlashMessage) Set(w http.ResponseWriter, cookieName string) error {
 	// encode struct to json
 	js, err := json.Marshal(fm)
 	if err != nil {
@@ -29,8 +30,8 @@ func (fm *flashMessage) Set(w http.ResponseWriter, cookieName string) error {
 }
 
 // GetFlash checks the request for a cookie a cookie and returns its contents
-// as a flashMessage
-func GetFlash(w http.ResponseWriter, r *http.Request, cookieName string) (*flashMessage, error) {
+// as a FlashMessage
+func GetFlash(w http.ResponseWriter, r *http.Request, cookieName string) (*FlashMessage, error) {
 
 	c, err := r.Cookie(cookieName)
 	if err != nil {
@@ -42,7 +43,7 @@ func GetFlash(w http.ResponseWriter, r *http.Request, cookieName string) (*flash
 		}
 	}
 
-	var fm *flashMessage
+	var fm *FlashMessage
 
 	err = json.Unmarshal([]byte(c.Value), &fm)
 	if err != nil {
