@@ -16,9 +16,14 @@ type FlashMessage struct {
 }
 
 // Set encodes a FlashMessage struct as a json string to a cookie
-func (fm *FlashMessage) Set(w http.ResponseWriter, cookieName string) error {
+func SetFlash(w http.ResponseWriter, message, flashTYpe, cookieName string) error {
+
 	// encode struct to json
-	js, err := json.Marshal(fm)
+	js, err := json.Marshal(
+		&FlashMessage{
+			Message: message,
+			Type:    flashTYpe,
+		})
 	if err != nil {
 		return err
 	}
